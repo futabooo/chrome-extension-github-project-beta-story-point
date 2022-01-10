@@ -1,0 +1,16 @@
+{
+    "name": "GitHub Project Beta Story Point",
+    "description": "Show Total Story Point",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "matches": [
+                "https://github.com/orgs/*/projects/*"
+            ],
+            "js": [
+                "src/content.js"
+            ]
+        }
+    ]
+}
