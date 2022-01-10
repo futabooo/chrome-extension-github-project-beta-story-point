@@ -21,7 +21,7 @@ const showBoardLayoutStoryPoints = () => {
     const totalStoryPointNode =
       columnCunterParentNode.querySelector(`.total-story-point`);
     if (totalStoryPointNode !== null) {
-      totalStoryPoint.innerText = `${totalStoryPoint}pt`;
+      totalStoryPointNode.innerText = `${totalStoryPoint}pt`;
     } else {
       const div = document.createElement("div");
       div.innerHTML = `<span class="total-story-point doGlGu">${totalStoryPoint}pt</span>`;
@@ -34,7 +34,7 @@ const showBoardLayoutStoryPoints = () => {
 };
 
 const isBoardLayout = () =>
-  document.querySelector(`[data-dnd-drop-id="board"]`) !== null;
+  document.querySelector(`[data-test-id="board-view"]`) !== null;
 
 const reducer = (previousValue, currentValue) => previousValue + currentValue;
 
@@ -52,22 +52,44 @@ const boardObserver = new MutationObserver(() => {
   console.log("board Changed");
   debounce(showBoardLayoutStoryPoints(), 500);
 });
+
 const taleObserver = new MutationObserver(() => {
   console.log("table Changed");
-  debounce(showBoardLayoutStoryPoints(), 500);
+  debounce(showTableLayoutStoryPoints(), 500);
 });
-const viewTarget = document.querySelector(`[aria-label="Select view"]`);
-const viewObserver = new MutationObserver(() => {
-  console.log("tab changed");
+
+const startTargetObserve = () => {
+  if (isBoardLayout()) {
+    const boardTarget = document.querySelector(`[data-test-id="board-view"]`);
+    boardObserver.observe(boardTarget, { attributes: true, subtree: true });
+  } else {
+    const tableTarget = document.querySelector(
+      `[data-test-id="table-scroll-container"]`
+    );
+    taleObserver.observe(tableTarget, { attributes: true, subtree: true });
+  }
+};
+
+const stopTargetObserve = () => {
   taleObserver.disconnect();
   boardObserver.disconnect();
+};
 
-  if (isBoardLayout) {
-    const boardTarget = document.querySelectorAll(`[data-dnd-drop-type="card"]`)[1];
-    boardObserver.observe(boardTarget, { childList: true, subtree: true });
-  } else {
-    const tableTarget = document.querySelector(`[data-test-id="table-scroll-container"]`);
-    taleObserver.observe(tableTarget, { childList: true, subtree: true });
-  }
+const viewTarget = document.querySelector(`[aria-label="Select view"]`);
+
+const viewObserver = new MutationObserver(() => {
+  console.log("tab changed");
+  stopTargetObserve();
+  startTargetObserve();
 });
-viewObserver.observe(viewTarget, { childList: true, subtree: true });
+
+viewObserver.observe(viewTarget, { attributes: true, subtree: true });
+
+window.onload = () => {
+  if (isBoardLayout()) {
+    showBoardLayoutStoryPoints();
+  } else {
+    showTableLayoutStoryPoints();
+  }
+  startTargetObserve();
+};
