@@ -1,0 +1,30 @@
+{
+    "name": "github-project-beta-story-point",
+    "version": "1.0.0",
+    "description": "Show Total Story Point",
+    "scripts": {
+        "build": "node ./scripts/build.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/futabooo/chrome-extension-github-project-beta-story-point.git"
+    },
+    "keywords": [
+        "chrome extension",
+        "github projects beta",
+        "story point"
+    ],
+    "author": "@futabooo",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/futabooo/chrome-extension-github-project-beta-story-point/issues"
+    },
+    "homepage": "https://github.com/futabooo/chrome-extension-github-project-beta-story-point",
+    "devDependencies": {
+        "esbuild": "0.14.11",
+        "typescript": "4.5"
+    },
+    "dependencies": {
+        "@types/chrome": "latest"
+    }
+}
