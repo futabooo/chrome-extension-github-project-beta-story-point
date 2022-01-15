@@ -8,7 +8,7 @@ const showBoardLayoutStoryPoints = () => {
   for (const node of document.querySelectorAll(`[data-board-column]`)) {
     const storyPoints = Array.from(
       node.querySelectorAll(`[data-test-id="custom-label-Story Point"]`)
-    ).map((el) => parseInt(el.innerText));
+    ).map((el) => parseInt((el as HTMLElement).innerText));
     if (storyPoints.length == 0) {
       continue;
     }
@@ -18,8 +18,9 @@ const showBoardLayoutStoryPoints = () => {
       '[data-test-id="column-counter"]'
     );
     const columnCunterParentNode = columnCunterNode.parentNode;
-    const totalStoryPointNode =
-      columnCunterParentNode.querySelector(`.total-story-point`);
+    const totalStoryPointNode = columnCunterParentNode.querySelector(
+      `.total-story-point`
+    ) as HTMLElement;
     if (totalStoryPointNode !== null) {
       totalStoryPointNode.innerText = `${totalStoryPoint}pt`;
     } else {
